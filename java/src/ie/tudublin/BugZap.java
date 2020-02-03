@@ -8,6 +8,10 @@ public class BugZap extends PApplet
     float playerY = 490;
     float playerWidth = 20;
 
+    float bugX = 250;
+    float bugY = 10;
+    float bugWidth = 20;
+
     public void settings()
     {
         size(500, 500);
@@ -20,6 +24,7 @@ public class BugZap extends PApplet
     {
         background(0, 0, 0);
         drawPlayer(playerX, playerY, playerWidth);
+        drawBug(bugX, bugY, bugWidth);
     }
 
     void drawPlayer(float x, float y, float w)
@@ -37,15 +42,35 @@ public class BugZap extends PApplet
 	{
 		if (keyCode == LEFT)
 		{
-			playerX = playerX - 5;
+            if(playerX >= 10)
+            {
+                playerX = playerX - 5;
+            }
 		}
 		if (keyCode == RIGHT)
 		{
-			playerX = playerX + 5;
+            if(playerX <= 490)
+            {
+                playerX = playerX + 5;
+            }
 		}
 		if (key == ' ')
 		{
-			System.out.println("SPACE key pressed");
+			drawLaser(playerX, playerY, playerWidth);
 		}
-	}
+    }
+    
+    void drawBug(float x, float y, float w)
+    {
+        fill(0, 0, 0);
+        triangle(x, y, x-10, y + 10, x + 10, y + 10);
+        triangle(x + 10, y + 10, x + 5, y + 10, x + 7, y + 20);
+        triangle(x - 10, y + 10, x - 5, y + 10, x - 7, y + 20);
+    }
+
+    void drawLaser(float x, float y, float w)
+    {
+        float playerH = w * 0.5f;
+        line((x - (0.5f * w)) + (w * 0.5f), y - (playerH * 0.5f), (x - (0.5f * w)) + (w * 0.5f), 0); // gun line
+    }
 }
