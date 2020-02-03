@@ -5,7 +5,8 @@ public class Main
 
     public void helloProcessing()
 	{
-		String[] a = {"MAIN"};
+        String[] a = {"MAIN"};
+        // create new sketch called HelloProcessing
         processing.core.PApplet.runSketch( a, new HelloProcessing());
 	}
     public static void main(String[] arg)
