@@ -23,5 +23,9 @@ public class Main
         Main main = new Main();
 		main.helloProcessing();
         
+        for(int i = topcat.getNumLives(); i >= 0; i-- )
+        {
+            topcat.kill();
+        }
     }
 }
