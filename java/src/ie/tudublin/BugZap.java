@@ -20,6 +20,7 @@ public class BugZap extends PApplet
 	float playerSpeed = 5; 		// used to control players speed
 	float playerWidth = 40; 	// tells us the width of the player character
 	float halfPlayerWidth = playerWidth / 2;	// gives us half the players width
+	int playerScore;
 	
 	// Bug Variables
 	float bugX, bugY;			// used to control bugs pos on x and y axis
@@ -32,6 +33,7 @@ public class BugZap extends PApplet
 		resetBug(); 			// reset bug variables
 		playerX = width / 2;	// place player in center of screen
 		playerY = height - 50;	// place player 50 pixels from the bottom of the screen
+		playerScore = 0; 				// set player score equal to 0
 	} // end reset()
 
 	// reset bug variables at start of game
@@ -112,8 +114,20 @@ public class BugZap extends PApplet
 		{
 			stroke(255, 0, 0); // make laser red
 			line(playerX, playerY, playerX, bugY); // laser begins at players gun and finishes at height of bug
+			checkBugHit(playerX, bugX, bugWidth);	// check if the bug was hit
 		} // end if
 	} // end keyPressed()
+
+	// check if the bug was hit
+	void checkBugHit(float pX, float bX, float bW)
+	{
+		// check if bug is hit by comparing player x axis pos to total bug x axis pos
+		if(pX > bX - bW && pX < bX + bW)
+		{
+			playerScore += 1; // increase player score by 1
+			resetBug(); // reset the bug to new position
+		}
+	}
 
 	// move the bug character
 	void moveBug()
@@ -133,14 +147,15 @@ public class BugZap extends PApplet
 				bugX = width - halfBugWidth;
 			} // end if
 
-			bugY += 10; // move bug 10 pixels down the screen
+			bugY += 20; // move bug 10 pixels down the screen
 		} // end if
 	} // end moveBug()
 
 	// draw the enemy and player on screen
 	public void draw()
 	{	
-		background(0);	// make background black		
+		background(0);	// make background black	
+		text("Score: " + playerScore, 20, 20); // keep the players score
 		drawPlayer(playerX, playerY, playerWidth);	// draw player to screen
 		drawBug(bugX, bugY);	// draw bug to screen
 		moveBug();	// move the bug further down the screen
