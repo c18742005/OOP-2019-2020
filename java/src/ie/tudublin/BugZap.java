@@ -3,91 +3,146 @@ package ie.tudublin;
 import processing.core.PApplet;
 
 public class BugZap extends PApplet
-{
-    // Player Variables
-    float playerX = 250;
-    float playerY = 490;
-    float playerWidth = 20;
-
-    // Bug Variables
-    float bugX = 250;
-    float bugY = 10;
-    float bugWidth = 20;
-
-    public void settings()
-    {
-        size(500, 500);
-    }
-
-    public void setup(){
-    }
-
-    public void draw()
-    {
-        background(0, 0, 0);
-        drawPlayer(playerX, playerY, playerWidth);
-        drawBug(bugX, bugY, bugWidth);
-
-        // randomly change the x coordinates of the bug
-        if ((frameCount % 60) == 0)
-        {
-            bugX = bugX + (random(-20, 20));
-        }
-    }
-
-    // method to draw the player character
-    void drawPlayer(float x, float y, float w)
-    {
-        float playerH = w * 0.5f;
-        stroke(255, 255, 255);
-        line(x - (0.5f * w), y, x + (0.5f * w), y); // bottom line
-        line(x - (0.5f * w), y, x - (0.5f * w), y - playerH); // left side line
-        line(x + (0.5f * w), y, x + (0.5f * w), y - playerH); // right side line
-        line(x - (0.5f * w), y - playerH, x + (0.5f * w), y - playerH); //top line
-        line((x - (0.5f * w)) + (w * 0.5f), y - (playerH + (0.5f * playerH)), (x - (0.5f * w)) + (w * 0.5f), y - (playerH * 0.5f)); // gun line
-    }
-
-    // check if a key was pressed and do something
-    public void keyPressed()
+{	
+	// edit the settings of the applet
+	public void settings()
 	{
-        // if left key pressed move player 10 steps to left
+		size(500, 500); // make screensize 500w x 500h
+	} // end settings()
+
+	// sets up any options or variables of the applet
+	public void setup() {
+		reset(); // call reset when setting up applet
+	} // end setup()
+
+	// Player Variables
+	float playerX, playerY; 	// used to control players pos on x and y axis
+	float playerSpeed = 5; 		// used to control players speed
+	float playerWidth = 40; 	// tells us the width of the player character
+	float halfPlayerWidth = playerWidth / 2;	// gives us half the players width
+	
+	// Bug Variables
+	float bugX, bugY;			// used to control bugs pos on x and y axis
+	float bugWidth = 30;		// tells us the width of the bug character
+	float halfBugWidth = bugWidth / 2;	// gives us half the bugs width
+
+	// resets the player and bugs variables at the beginning of the game
+	void reset()
+	{
+		resetBug(); 			// reset bug variables
+		playerX = width / 2;	// place player in center of screen
+		playerY = height - 50;	// place player 50 pixels from the bottom of the screen
+	} // end reset()
+
+	// reset bug variables at start of game
+	void resetBug()
+	{
+		bugX = random(halfBugWidth, width - halfBugWidth); // place bug at random x position without it being offscreen
+		bugY = 50; // place bug 50 pixels from top of screen
+	} // end resetBug()
+
+	// draw the bug character
+	void drawBug(float x, float y)
+	{
+		stroke(255); // set colour of bug
+		float saucerHeight = bugWidth * 0.7f; // set height og bug to be 70% of the width
+
+		// Draw the bug
+		line(x, y - saucerHeight, x - halfBugWidth, y);
+		line(x, y - saucerHeight, x +  halfBugWidth, y);		
+		line(x - halfBugWidth, y, x - halfBugWidth, y);
+		line(x - halfBugWidth, y, x + halfBugWidth, y);
+
+		// draw bugs feet
+		float feet = bugWidth * 0.1f;
+		line(x - feet, y, x - halfBugWidth, y + halfBugWidth);
+		line(x  + feet, y, x + halfBugWidth, y + halfBugWidth);
+
+		feet = bugWidth * 0.3f;
+		line(x - feet, y, x - halfBugWidth, y + halfBugWidth);
+		line(x  + feet, y, x + halfBugWidth, y + halfBugWidth);
+
+		// draw bugs eyes
+		float eyes  = bugWidth * 0.1f;
+		line(x - eyes, y - eyes, x - eyes, y - eyes * 2f);
+		line(x + eyes, y - eyes, x + eyes, y - eyes * 2f);
+	} // end drawBug()
+
+	// draw a player character to the screen
+	void drawPlayer(float x, float y, float w)
+	{
+		stroke(255); // choose the colour of the player
+		float playerHeight = w / 2; // make player height half the width
+		
+		// Draw player character
+		line(x - halfPlayerWidth, y + playerHeight, x + halfPlayerWidth, y + playerHeight);
+		line(x - halfPlayerWidth, y + playerHeight, x - halfPlayerWidth, y + playerHeight * 0.5f);
+		line(x + halfPlayerWidth, y + playerHeight, x + halfPlayerWidth, y + playerHeight * 0.5f);
+		line(x - halfPlayerWidth, y + playerHeight * 0.5f, x - (halfPlayerWidth * 0.8f), y + playerHeight * 0.3f);
+		line(x + halfPlayerWidth, y + playerHeight * 0.5f, x + (halfPlayerWidth * 0.8f), y + playerHeight * 0.3f);
+		line(x - (halfPlayerWidth * 0.8f), y + playerHeight * 0.3f, x + (halfPlayerWidth * 0.8f), y + playerHeight * 0.3f);
+		line(x, y, x, y + playerHeight * 0.3f); 
+	} //end drawPlayer
+
+	// what happens when a key is pressed
+	public void keyPressed()
+	{
+		// if left key is pressed move player left
 		if (keyCode == LEFT)
 		{
-            if(playerX >= 10)
-            {
-                playerX = playerX - 5;
-            }
-        }
-        // if right key pressed move player 10 steps to right
+			// ensure player icon does not go off screen
+			if (playerX > halfPlayerWidth)
+			{
+				playerX -= playerSpeed;
+			} // end if
+		} //end if
+
+		// if right key is pressed move player right
 		if (keyCode == RIGHT)
 		{
-            if(playerX <= 490)
-            {
-                playerX = playerX + 5;
-            }
-        }
-        // if space key pressed fire laser
+			// ensure player icon does not go off screen
+			if (playerX < width - halfPlayerWidth)
+			{
+				playerX += playerSpeed;
+			} // end if
+		} // end if
+
+		// if space key is pressed then fire a laser
 		if (key == ' ')
 		{
-			drawLaser(playerX, playerY, playerWidth);
-		}
-    }
-    
-    // method to draw a bug character to screen 
-    void drawBug(float x, float y, float w)
-    {
-        fill(0, 0, 0);
-        triangle(x, y, x-10, y + 10, x + 10, y + 10);
-        triangle(x + 10, y + 10, x + 5, y + 10, x + 7, y + 20);
-        triangle(x - 10, y + 10, x - 5, y + 10, x - 7, y + 20);
-    }
+			stroke(255, 0, 0); // make laser red
+			line(playerX, playerY, playerX, bugY); // laser begins at players gun and finishes at height of bug
+		} // end if
+	} // end keyPressed()
 
-    // method to fire a laser on screen 
-    void drawLaser(float x, float y, float w)
-    {
-        float playerH = w * 0.5f;
+	// move the bug character
+	void moveBug()
+	{
+		// as draw() called 60 times a second ensure bug moves every second
+		if ((frameCount % 60) == 0)
+		{
+			bugX += random(-10, +10); // move bug randomly 10 pixels right or left
 
-        // laser line starting at top of laser gun and extending to top of screen
-        line((x - (0.5f * w)) + (w * 0.5f), y - (playerH * 0.5f), (x - (0.5f * w)) + (w * 0.5f), 0);
-    }
-}
+			// ensure bug does not go offscreen
+			if (bugX < halfBugWidth )
+			{
+				bugX = halfBugWidth;
+			} // end if
+			if (bugX + halfBugWidth > width)
+			{
+				bugX = width - halfBugWidth;
+			} // end if
+
+			bugY += 10; // move bug 10 pixels down the screen
+		} // end if
+	} // end moveBug()
+
+	// draw the enemy and player on screen
+	public void draw()
+	{	
+		background(0);	// make background black		
+		drawPlayer(playerX, playerY, playerWidth);	// draw player to screen
+		drawBug(bugX, bugY);	// draw bug to screen
+		moveBug();	// move the bug further down the screen
+	} // end draw()
+} // end bugZap class
