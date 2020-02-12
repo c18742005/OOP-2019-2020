@@ -11,7 +11,7 @@ public class Loops extends PApplet
 
 	public void setup() 
 	{
-		
+		colorMode(HSB);
 	}
 
 	
@@ -25,8 +25,6 @@ public class Loops extends PApplet
 
 	public void drawPattern()
 	{
-		background(200);
-		stroke(0);
 		for(int x = 0; x <= 500; x+= 25)
 		{
 			line(250, 250, x, 0);
@@ -39,9 +37,37 @@ public class Loops extends PApplet
 		}
 	}
 
+	public void circlePattern()
+	{
+		float diameter = 50;
+		float radius = diameter / 2;
+
+		for(float x = 0 + radius; x <= 500 - radius; x += diameter)
+		{
+			ellipse(x, 250, diameter, diameter);
+		}
+	}
+
+	public void rectanglePattern()
+	{
+		float height = 500;
+		float width = height / 10;
+		int color = 0;
+
+		for(float x = 0; x <= 500 - width; x += width)
+		{
+			noStroke();
+			fill(color, 255, 255);
+			color += 18;
+			rect(x, 0, width, height);
+		}
+	}
+
 	public void draw()
 	{	
-		drawPattern();
+		background(200);
+		stroke(0);
+		rectanglePattern();
 		/*
 		line(10, 10, 100, 10);
 		line(10, 20, 100, 20);
