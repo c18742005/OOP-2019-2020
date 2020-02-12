@@ -23,11 +23,26 @@ public class Loops extends PApplet
 		}
 	}	
 
+	public void drawPattern()
+	{
+		background(200);
+		stroke(0);
+		for(int x = 0; x <= 500; x+= 25)
+		{
+			line(250, 250, x, 0);
+			line(250, 250, x, 500);
+		}
+		for(int y = 0; y <= 500; y+= 25)
+		{
+			line(250, 250, 0, y);
+			line(250, 250, 500, y);
+		}
+	}
 
 	public void draw()
 	{	
-		background(0);		
-		stroke(255);
+		drawPattern();
+		/*
 		line(10, 10, 100, 10);
 		line(10, 20, 100, 20);
 		line(10, 30, 100, 30);
@@ -44,7 +59,6 @@ public class Loops extends PApplet
 			line(300, yy, 400, yy);
 			yy += 10;
 		}
-		
-	
+		*/
 	}
 }
