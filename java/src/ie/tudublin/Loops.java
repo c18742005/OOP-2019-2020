@@ -104,11 +104,44 @@ public class Loops extends PApplet
 		}
 	}
 
+	public void diminishingRectangle()
+	{
+		fill(255);
+		int border = 20;
+
+		for(int i = 0; i < 5; i++)
+		{
+			rect(border, border, 500 - (2 * border), 50);
+			border+=50;
+		}
+	}
+
+	public void multiCircles()
+	{
+		float diameter = 50;
+		float radius = diameter / 2;
+		float r = radius;
+		int colour = 0;
+
+		for(int y = 0; y <= 10; y++)
+		{
+			for(float x = radius; x <= 500 - radius; x += diameter)
+			{
+				noStroke();
+				fill(colour, 255, 255);
+				ellipse(x, r, diameter, diameter);
+			}
+
+			r += diameter;
+			colour += 18;
+		}
+	}
+
 	public void draw()
 	{	
 		background(200);
 		stroke(0);
-		drawGrid();
+		multiColourCirc();
 		/*
 		line(10, 10, 100, 10);
 		line(10, 20, 100, 20);
