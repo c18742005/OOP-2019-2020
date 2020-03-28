@@ -1,6 +1,7 @@
 package ie.tudublin;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 import processing.data.TableRow;
 
 public class Star
@@ -78,18 +79,21 @@ public class Star
             + xG + "\t" + yG + "\t" + zG + "\t" + absMag; 
     }
 
+    
     public Star(String displayName
         , boolean hab, float xG, float yG, float zG, float distance
         , float absMag
         )
     {
         this.displayName = displayName;
+        this.hab = hab;
         this.xG = xG;
         this.yG = yG;
-        this.zG = xG;
+        this.zG = zG;
         this.distance = distance;
         this.absMag = absMag;        
     }
+    
 
     // Default constructor
     // Chain to the other constructor
@@ -123,11 +127,11 @@ public class Star
         pa.stroke(255, 255, 0);
         pa.line(x, y -5, x, y + 5);
         pa.line(x - 5, y, x + 5, y);
-        pa.stroke(255, 0, 0);
+        pa.stroke(0, 255, 255);
         pa.ellipse(x, y, absMag, absMag);
         pa.textAlign(PApplet.LEFT, PApplet.CENTER);
         pa.fill(255);
-        pa.text(displayName, x + 50, y);
+        pa.text(displayName, x + 20, y);
     }
 
 
